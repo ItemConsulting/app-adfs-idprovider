@@ -6,7 +6,7 @@ plugins {
 
 app {
     name = project.appName
-    displayName = 'ADFS ID Provider'
+    displayName = 'OAuth ID Provider'
     vendorName = 'Enonic AS'
     vendorUrl = 'http://enonic.com'
     systemVersion = "${xpVersion}"
@@ -41,9 +41,16 @@ task generate_docs( type: Exec ) {
     mustRunAfter 'build'
 }
 
-task copy_urijs( type: Exec ) {
-    executable 'npm'
-    args = ['run', 'copyUriJs']
+if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+    task copy_urijs( type: Copy ) {
+        from fileTree(dir: "node_modules/urijs", includes: ["**/*.js", "**/*.json"]).files
+        into 'build/resources/main/lib/urijs'
+    }
+} else {
+    task copy_urijs( type: Exec ) {
+        executable 'npm'
+        args = ['run', 'copyUriJs']
+    }
 }
 processResources.dependsOn.add( copy_urijs )
 
