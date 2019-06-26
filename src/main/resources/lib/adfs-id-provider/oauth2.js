@@ -56,7 +56,9 @@ exports.redirectToAuthorizationUrl = function(request) {
 	var location = new lib.node.uriJs(idProviderConfig.authorizationUrl);
 	location.addQuery('response_type', 'code');
 	location.addQuery('client_id', clientId);
+	location.addQuery('scope', 'openid');
 	location.addQuery('resource', resource);
+	location.addQuery('redirect_uri', redirectUri);
 
 	var response = {
 		body: '', // NOTE: Workaround for Safari so Content-Length header becomes 0 on /admin/tool
@@ -86,6 +88,7 @@ exports.requestAccessToken = function(request) {
 	var idProviderUrl = getIdProviderUrl({type:'absolute'});
 	log.debug('idProviderUrl:' + toStr(idProviderUrl));
 
+	var redirectUri = lib.xp.portal.idProviderUrl({type:'absolute'});
 	var accessTokenRequest = {
 		method: 'POST',
 		url: idProviderConfig.tokenUrl,
@@ -96,7 +99,8 @@ exports.requestAccessToken = function(request) {
 			grant_type: 'authorization_code',
 			client_id: idProviderConfig.clientId,
 			code: request.params.code,
-			client_secret: idProviderConfig.clientSecret
+			client_secret: idProviderConfig.clientSecret,
+			redirect_uri: redirectUri
 		},
 		proxy: idProviderConfig.proxy
 	};
