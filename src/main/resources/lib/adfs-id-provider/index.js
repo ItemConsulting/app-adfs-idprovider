@@ -33,6 +33,7 @@ var toStr = exports.object.toStr;
 var valueFromFormat = exports.object.valueFromFormat;
 var getIdProviderConfig = lib.xp.auth.getIdProviderConfig;
 var login = lib.xp.auth.login;
+var addOrReplaceToState = exports.auth.addOrReplaceToState;
 
 //──────────────────────────────────────────────────────────────────────────────
 // ADFS ID provider methods
@@ -90,6 +91,11 @@ exports.handleIdProviderRequest = function (request) {
         skipAuth: true
     });
     log.debug('loginResult:' + toStr(loginResult));
+
+    var isAuthenticated = loginResult.authenticated;
+    if(isAuthenticated){
+        addOrReplaceToState(user.key, toStr(json));
+    }
 
     var location = request.cookies && request.cookies.enonicXpReturnToUrl ? request.cookies.enonicXpReturnToUrl : '/';
 

@@ -87,3 +87,8 @@ exports.handleLogoutRequest = function(request) {
 	log.debug('redirectResponse:' + toStr(redirectResponse));
 	return redirectResponse;
 };
+
+exports.addOrReplaceToState = function (key, jwt) {
+	var bean = __.newBean('openidConnectTokenMediator.no.item.lib.impl.StateScriptBean');
+	return bean.addOrReplaceToState(key, jwt);
+};

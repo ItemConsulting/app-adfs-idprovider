@@ -25,6 +25,11 @@
       <help-text>Specifies a client identifier for this OAuth 2.0 client in AD FS.</help-text>
       <occurrences minimum="1" maximum="1"/>
     </input>
+    <input name="clientSecret" type="TextLine">
+      <label>clientSecret</label>
+      <help-text>Specifies a client secret for this openid.</help-text>
+      <occurrences minimum="1" maximum="1"/>
+    </input>
     <input name="resource" type="TextLine">
       <label>resource</label>
       <help-text>The server resource server that the Client wants an access. By default the current protocol and hostname. Example:

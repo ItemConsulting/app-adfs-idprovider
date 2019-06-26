@@ -57,19 +57,12 @@ exports.redirectToAuthorizationUrl = function(request) {
 	location.addQuery('response_type', 'code');
 	location.addQuery('client_id', clientId);
 	location.addQuery('resource', resource);
-	location.addQuery('redirect_uri', redirectUri);
+
 	var response = {
 		body: '', // NOTE: Workaround for Safari so Content-Length header becomes 0 on /admin/tool
 		status: 307, // Temporary redirect // http://insanecoding.blogspot.no/2014/02/http-308-incompetence-expected.html
 		headers: {
-			'Location': location.toString(),
-			//Referer: returnToUrl, // AD FS doesn't use this. We use a cookie instead.
-		},
-		cookies: {
-			enonicXpReturnToUrl: {
-				value: returnToUrl, // So idProviderRequestHandler knows which url to redirect the user to
-				path: '/'
-			}
+			'Location': location.toString()
 		},
 		postProcess: false,
 		applyFilters: false
@@ -102,8 +95,8 @@ exports.requestAccessToken = function(request) {
 		params: {
 			grant_type: 'authorization_code',
 			client_id: idProviderConfig.clientId,
-			redirect_uri: idProviderUrl,
-			code: request.params.code
+			code: request.params.code,
+			client_secret: idProviderConfig.clientSecret
 		},
 		proxy: idProviderConfig.proxy
 	};
