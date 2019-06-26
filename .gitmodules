@@ -1,0 +1,3 @@
+[submodule "src/main/java/openidConnectTokenMediator"]
+	path = src/main/java/openidConnectTokenMediator
+	url = https://github.com/ItemConsulting/openidConnectTokenMediator.git
